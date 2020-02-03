@@ -24,11 +24,12 @@ subdir('BLAS/SRC')
 blas = library('blas', blas_sources,
   install: true)
 
-blas_test_exe = executable('test_nrm2', 'TESTING/test_nrm2.f90',
-  link_with: blas)
-test('BLAS NRM2', blas_test_exe,
-  timeout: 10, suite: 'blas')
-
+if arith.contains('d')
+  blas_test_exe = executable('test_nrm2', 'TESTING/test_nrm2.f90',
+    link_with: blas)
+  test('BLAS NRM2', blas_test_exe,
+    timeout: 10, suite: 'blas')
+endif
 
 ## CBLAS
 if get_option('build_cblas')

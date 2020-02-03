@@ -49,9 +49,11 @@ set_target_properties(
   )
 add_subdirectory(BLAS/SRC)
 
-add_executable(test_nrm2 TESTING/test_nrm2.f90)
-target_link_libraries(test_nrm2 blas)
-add_test(NAME blasNRM2 COMMAND test_nrm2)
+if("d" IN_LIST arith)
+  add_executable(test_nrm2 TESTING/test_nrm2.f90)
+  target_link_libraries(test_nrm2 blas)
+  add_test(NAME blasNRM2 COMMAND test_nrm2)
+endif()
 
 install(TARGETS blas
 EXPORT LAPACKTargets
@@ -96,12 +98,12 @@ if(build_lapack)
     if("d" IN_LIST arith)
       add_executable(test_dgesvd TESTING/test_dgesvd.f90)
       target_link_libraries(test_dgesvd lapack)
-      add_test(NAME dGESV COMMAND test_dgesv)
+      add_test(NAME dGESV COMMAND test_dgesvd)
     endif()
     if("s" IN_LIST arith)
       add_executable(test_sgesvd TESTING/test_sgesvd.f90)
       target_link_libraries(test_sgesvd lapack)
-      add_test(NAME sGESV COMMAND test_sgesv)
+      add_test(NAME sGESV COMMAND test_sgesvd)
     endif()
   endif()
   install(TARGETS lapack
