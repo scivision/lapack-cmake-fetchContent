@@ -2425,21 +2425,3 @@ lapacke_slagsy_work.c
 lapacke_zlagsy.c
 lapacke_zlagsy_work.c
 )
-
-
-target_sources(lapacke PRIVATE ${SOURCES})
-if("s" IN_LIST arith)
-  target_sources(lapacke PRIVATE ${SOURCES_SINGLE})
-endif()
-if("d" IN_LIST arith)
-  target_sources(lapacke PRIVATE ${SOURCES_DOUBLE})
-endif()
-if("c" IN_LIST arith)
-  target_sources(lapacke PRIVATE ${SOURCES_COMPLEX})
-endif()
-if("z" IN_LIST arith)
-  target_sources(lapacke PRIVATE ${SOURCES_COMPLEX16})
-endif()
-if(build_xblas)
-  target_sources(lapacke PRIVATE ${EXTENDED})
-endif()

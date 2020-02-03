@@ -99,18 +99,30 @@ set(ZLEV3 cblas_zgemm.c cblas_zsymm.c cblas_zhemm.c cblas_zherk.c
 
 
 set(SOURCES)
-if("s" IN_LIST arith)
+if(BUILD_SINGLE)
   list(APPEND SOURCES ${SLEV1} ${SCLEV1} ${SLEV2} ${SLEV3} ${ERRHAND})
 endif()
-if("d" IN_LIST arith)
+if(BUILD_DOUBLE)
   list(APPEND SOURCES ${DLEV1} ${DLEV2} ${DLEV3} ${ERRHAND})
 endif()
-if("c" IN_LIST arith)
+if(BUILD_COMPLEX)
   list(APPEND SOURCES ${CLEV1} ${SCLEV1} ${CLEV2} ${CLEV3} ${ERRHAND})
 endif()
-if("z" IN_LIST arith)
+if(BUILD_COMPLEX16)
   list(APPEND SOURCES ${ZLEV1} ${ZLEV2} ${ZLEV3} ${ERRHAND})
 endif()
 list(REMOVE_DUPLICATES SOURCES)
 
-target_sources(cblas PRIVATE ${SOURCES})
+add_library(cblas ${SOURCES})
+set_target_properties(
+  cblas PROPERTIES
+  LINKER_LANGUAGE C
+  VERSION ${LAPACK_VERSION}
+  SOVERSION ${LAPACK_MAJOR_VERSION}
+  )
+target_include_directories(cblas PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../include>
+  $<INSTALL_INTERFACE:include>
+)
+target_link_libraries(cblas PRIVATE ${BLAS_LIBRARIES})
+lapack_install_library(cblas)

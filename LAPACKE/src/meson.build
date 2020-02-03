@@ -2382,6 +2382,6 @@ endif
 if arith.contains('z')
   lapacke_sources += lapacke_complex16
 endif
-if use_xblas
+if build_xblas
   lapacke_sources += lapacke_extended
 endif

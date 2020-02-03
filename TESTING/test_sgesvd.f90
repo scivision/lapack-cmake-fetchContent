@@ -1,4 +1,4 @@
-module demo_svd
+module svd32
 use, intrinsic :: iso_fortran_env, only: stderr=>error_unit, wp=>real32
 implicit none
 
@@ -43,10 +43,10 @@ endif
 
 end function svd
 
-end module demo_svd
+end module svd32
 
 
-use demo_svd
+use svd32
 implicit none
 
 integer :: info

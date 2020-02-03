@@ -458,25 +458,25 @@ lapack_sources = []
 
 if arith.contains('s')
   lapack_sources += [slasrc, dslasrc, sclaux, allaux]
-  if use_xblas
+  if build_xblas
     lapack_sources += sxlasrc
   endif
 endif
 if arith.contains('d')
   lapack_sources += [dlasrc, dslasrc, dzlaux, allaux]
-  if use_xblas
+  if build_xblas
     lapack_sources += dxlasrc
   endif
 endif
 if arith.contains('c')
   lapack_sources += [clasrc, zclasrc, sclaux, allaux]
-  if use_xblas
+  if build_xblas
     lapack_sources += cxlasrc
   endif
 endif
 if arith.contains('z')
   lapack_sources += [zlasrc, zclasrc, dzlaux, allaux]
-  if use_xblas
+  if build_xblas
     lapack_sources += zxlasrc
   endif
 endif

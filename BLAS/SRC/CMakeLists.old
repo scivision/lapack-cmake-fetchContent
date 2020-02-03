@@ -83,18 +83,24 @@ set(ZBLAS3 zgemm.f zsymm.f zsyrk.f zsyr2k.f ztrmm.f ztrsm.f
 
 
 set(SOURCES)
-if("s" IN_LIST arith)
+if(BUILD_SINGLE)
   list(APPEND SOURCES ${SBLAS1} ${ALLBLAS} ${SBLAS2} ${SBLAS3})
 endif()
-if("d" IN_LIST arith)
+if(BUILD_DOUBLE)
   list(APPEND SOURCES ${DBLAS1} ${ALLBLAS} ${DBLAS2} ${DBLAS3})
 endif()
-if("c" IN_LIST arith)
+if(BUILD_COMPLEX)
   list(APPEND SOURCES ${CBLAS1} ${CB1AUX} ${ALLBLAS} ${CBLAS2} ${CBLAS3})
 endif()
-if("z" IN_LIST arith)
+if(BUILD_COMPLEX16)
   list(APPEND SOURCES ${ZBLAS1} ${ZB1AUX} ${ALLBLAS} ${ZBLAS2} ${ZBLAS3})
 endif()
 list(REMOVE_DUPLICATES SOURCES)
 
-target_sources(blas PRIVATE ${SOURCES})
+add_library(blas ${SOURCES})
+set_target_properties(
+  blas PROPERTIES
+  VERSION ${LAPACK_VERSION}
+  SOVERSION ${LAPACK_MAJOR_VERSION}
+  )
+lapack_install_library(blas)
