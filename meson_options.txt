@@ -2,5 +2,5 @@ option('build_lapacke', type : 'boolean', value: false, yield: true)
 option('build_xblas', type : 'boolean', value: false, yield: true)
 option('build_cblas', type : 'boolean', value: false, yield: true)
 option('build_lapack', type : 'boolean', value: true, yield: true)
-option('arith', type : 'array', value : ['s', 'd'],
+option('arith', type : 'array', value : ['s', 'd'], choices: ['s','d','c','z'],
   description: 'real kind: s=real32, d=real64, c=complex64, z=complex128', yield: true)
