@@ -1,0 +1,34 @@
+
+cmake 3.16.3, Ninja 1.10.0
+
+565444 .ninja_deps
+856053 .ninja_log
+3256209 build.ninja
+3252 cmake_install.cmake
+16461 CMakeCache.txt
+1002 CTestTestfile.cmake
+728634 libblas.a
+289086 libcblas.a
+11016240 liblapack.a
+5048802 liblapacke.a
+12339 rules.ninja
+729 svd32.mod
+729 svd64.mod
+547055 test_dgesvd.exe
+323651 test_nrm2.exe
+553703 test_sgesvd.exe
+
+
+meson 0.53.0, Ninja 1.10.0
+
+653044 .ninja_deps
+420040 .ninja_log
+1442642 build.ninja
+2197815 compile_commands.json
+733682 libblas.a
+290962 libcblas.a
+11062434 liblapack.a
+5082674 liblapacke.a
+549103 test_dgesvd.exe
+323651 test_nrm2.exe
+555751 test_sgesvd.exe

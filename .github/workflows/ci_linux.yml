@@ -4,6 +4,37 @@ on: [push, pull_request]
 
 jobs:
 
+  cmake:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v1
+      with:
+        python-version: '3.x'
+    - name: Install prereqs
+      run: |
+        sudo apt update -yq
+        sudo apt install -yq --no-install-recommends gfortran
+    - run: pip install cmake
+
+    - run: cmake -B build -Darith=d
+      env:
+        FC: gfortran
+    - run: cmake --build build --parallel
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: Linux_Cmake_Buildlog
+        path: build/CMakeFiles/CMakeError.log
+
+    - run: ctest -V
+      working-directory: build
+    - uses: actions/upload-artifact@v1
+      if: failure()
+      with:
+        name: Linux_CMake_Testlog
+        path: build/Testing/Temporary/LastTest.log
+
   meson:
     runs-on: ubuntu-latest
     steps:
@@ -17,7 +48,7 @@ jobs:
         sudo apt update -yq
         sudo apt install -yq --no-install-recommends ninja-build gfortran
 
-    - run: meson setup build
+    - run: meson setup build -Darith=s
       env:
         FC: gfortran
     - run: ninja -C build
