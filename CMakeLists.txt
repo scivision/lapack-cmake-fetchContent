@@ -8,10 +8,6 @@ VERSION 3.9.0
 HOMEPAGE_URL "http://netlib.org/lapack")
 enable_testing()
 
-cmake_policy(SET CMP0074 NEW)
-cmake_policy(SET CMP0076 NEW)
-cmake_policy(SET CMP0077 NEW)
-cmake_policy(SET CMP0082 NEW)
 option(build_cblas "Build CBLAS" false)
 option(build_lapack "Build LAPACK" true)
 option(build_lapacke "Build LAPACKE" false)
