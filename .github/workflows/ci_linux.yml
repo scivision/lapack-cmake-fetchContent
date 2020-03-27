@@ -1,13 +1,22 @@
 name: ci_linux
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "**.f90"
+      - "**.F90"
+      - "**.cmake"
+      - "**/*.txt"
+      - "**.build"
+      - ".github/workflows/ci_linux.yml"
+  pull_request:
 
 jobs:
 
   cmake:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
@@ -15,30 +24,15 @@ jobs:
       run: |
         sudo apt update -yq
         sudo apt install -yq --no-install-recommends gfortran
-    - run: pip install cmake
 
-    - run: cmake -B build -Darith=d
+    - run: ctest -S setup.cmake -VV
       env:
         FC: gfortran
-    - run: cmake --build build --parallel
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: Linux_Cmake_Buildlog
-        path: build/CMakeFiles/CMakeError.log
-
-    - run: ctest -V
-      working-directory: build
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: Linux_CMake_Testlog
-        path: build/Testing/Temporary/LastTest.log
 
   meson:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
         python-version: '3.x'
