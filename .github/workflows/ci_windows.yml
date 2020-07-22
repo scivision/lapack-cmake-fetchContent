@@ -4,10 +4,10 @@ on:
   push:
     paths:
       - "**.cmake"
-      - "**.txt"
-      - "**.build"
+      - "**/CMakeLists.txt"
+      - "**/meson.build"
       - ".github/workflows/ci_windows.yml"
-  pull_request:
+
 
 jobs:
 
@@ -15,32 +15,22 @@ jobs:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
-    - run: cinst -y ninja
 
     - run: ctest -S setup.cmake -VV
-      env:
-        FC: gfortran
-        CC: gcc
-
 
   meson:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    - run: cinst -y ninja
-    - run: pip install meson
+    - run: pip install meson ninja
 
     - run: meson setup build -Darith=d
-      env:
-        FC: gfortran
-    - run: ninja -C build
+
+    - run: meson compile -C build
     - uses: actions/upload-artifact@v1
       if: failure()
       with:

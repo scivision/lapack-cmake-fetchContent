@@ -5,10 +5,10 @@ on:
   push:
     paths:
       - "**.cmake"
-      - "**.txt"
-      - "**.build"
+      - "**/CMakeLists.txt"
+      - "**./meson.build"
       - ".github/workflows/ci_macos.yml"
-  pull_request:
+
 
 jobs:
 
@@ -16,9 +16,6 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
 
     - run: ctest -S setup.cmake -VV
       env:
@@ -29,17 +26,17 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    - run: brew install ninja
-    - run: pip install meson
+    - run: pip install meson ninja
 
     - run: meson setup build -Darith=d
       env:
-        FC: gfortran
-    - run: ninja -C build
+        FC: gfortran-9
+
+    - run: meson compile -C build
     - uses: actions/upload-artifact@v1
       if: failure()
       with:

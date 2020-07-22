@@ -6,10 +6,10 @@ on:
       - "**.f90"
       - "**.F90"
       - "**.cmake"
-      - "**/*.txt"
-      - "**.build"
+      - "**/CMakeLists.txt"
+      - "**/meson.build"
       - ".github/workflows/ci_linux.yml"
-  pull_request:
+
 
 jobs:
 
@@ -17,35 +17,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.x'
-    - name: Install prereqs
-      run: |
-        sudo apt update -yq
-        sudo apt install -yq --no-install-recommends gfortran
 
     - run: ctest -S setup.cmake -VV
       env:
-        FC: gfortran
+        FC: gfortran-9
 
   meson:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v2
       with:
         python-version: '3.x'
 
-    - run: pip install meson
-    - run: |
-        sudo apt update -yq
-        sudo apt install -yq --no-install-recommends ninja-build gfortran
+    - run: pip install meson ninja
 
     - run: meson setup build -Darith=s
       env:
-        FC: gfortran
-    - run: ninja -C build
+        FC: gfortran-9
+
+    - run: meson compile -C build
     - uses: actions/upload-artifact@v1
       if: failure()
       with:
