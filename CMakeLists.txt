@@ -1,44 +1,40 @@
 cmake_minimum_required(VERSION 3.13)
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Debug or Release")
-endif()
+
+include(CMAKE/policy.cmake)
+
 project(LAPACK
 LANGUAGES C Fortran
 VERSION 3.9.0
 HOMEPAGE_URL "http://netlib.org/lapack")
-enable_testing()
 
-option(build_cblas "Build CBLAS" false)
-option(build_lapack "Build LAPACK" true)
-option(build_lapacke "Build LAPACKE" false)
-option(build_xblas "Build extended blas" false)
+include(CTest)
 
+include(CMAKE/options.cmake)
 
 if(NOT arith)
-  set(arith "s;d")
+  # build all by default
+  set(arith "s;d;c;z")
 endif()
 
-# typical projects set options too strict for MUMPS code style, so if
-# being used as external project, locally override MUMPS compile options
+# typical projects set options too strict for old code style, so if
+# being used as external project, locally override compile options
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
-# MUMPS is being compiled by itself or as ExternalProject
+# being compiled by itself or as ExternalProject
   if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
     if(WIN32)
-    add_compile_options(/arch:native)
+    add_compile_options(/QxHost)
       # /heap-arrays is necessary to avoid runtime errors in programs using this library
       string(APPEND CMAKE_Fortran_FLAGS " /warn:declarations /heap-arrays")
     else()
-      add_compile_options(-march=native)
+      add_compile_options(-xHost)
       string(APPEND CMAKE_Fortran_FLAGS " -warn declarations")
     endif()
   elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
     add_compile_options(-mtune=native)
     string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none")
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
-    string(APPEND CMAKE_Fortran_FLAGS " -Mdclchk")
   endif()
 else()
-  # MUMPS is being compiled via FetchContent, override options to avoid tens of megabytes of warnings
+  # being compiled via FetchContent, override options to avoid tens of megabytes of warnings
   if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
     if(WIN32)
       # /heap-arrays is necessary to avoid runtime errors in programs using this library
@@ -47,15 +43,9 @@ else()
       set(CMAKE_Fortran_FLAGS "-warn declarations")
     endif()
   elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-    add_compile_options(-mtune=native)
     set(CMAKE_Fortran_FLAGS "-fimplicit-none")
-  elseif(CMAKE_Fortran_COMPILER_ID STREQUAL PGI)
-    set(CMAKE_Fortran_FLAGS "-Mdclchk")
   endif()
 endif()
-
-include(CheckFortranSourceCompiles)
-check_fortran_source_compiles("real :: x; x=norm2([0.]); end" f08_norm2 SRC_EXT f90)
 
 # --- BLAS
 add_library(blas)
@@ -66,7 +56,7 @@ set_target_properties(
   )
 add_subdirectory(BLAS/SRC)
 
-if("d" IN_LIST arith)
+if(BUILD_TESTING AND "d" IN_LIST arith)
   add_executable(test_nrm2 TESTING/test_nrm2.f90)
   target_link_libraries(test_nrm2 blas)
   add_test(NAME blasNRM2 COMMAND test_nrm2)
@@ -111,6 +101,11 @@ if(build_lapack)
   add_subdirectory(SRC)
 
   ### test lapack
+  if(BUILD_TESTING)
+    include(CheckFortranSourceCompiles)
+    check_fortran_source_compiles("real :: x; x=norm2([0.]); end" f08_norm2 SRC_EXT f90)
+  endif()
+
   if(f08_norm2)
     if("d" IN_LIST arith)
       add_executable(test_dgesvd TESTING/test_dgesvd.f90)
@@ -123,6 +118,7 @@ if(build_lapack)
       add_test(NAME sGESV COMMAND test_sgesvd)
     endif()
   endif()
+
   install(TARGETS lapack
   EXPORT LAPACKTargets
   ARCHIVE DESTINATION lib
@@ -151,3 +147,14 @@ if(build_lapacke)
   LIBRARY DESTINATION lib
   INCLUDES DESTINATION include)
 endif()
+
+# --- install
+
+include(CMAKE/install.cmake)
+
+include(FeatureSummary)
+add_feature_info(C-BLAS build_cblas "Build CBLAS")
+add_feature_info(FortranLapack build_lapack "Build Fortran LAPACK")
+add_feature_info(C-LapackE build_lapacke "Build C-langauge LAPACKE")
+add_feature_info(ExtendedBLAS build_xblas "Build extended BLAS")
+feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES)

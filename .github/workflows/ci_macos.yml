@@ -1,5 +1,6 @@
 name: ci_macos
-
+env:
+   HOMEBREW_NO_INSTALL_CLEANUP: 1
 
 on:
   push:
@@ -17,12 +18,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: ctest -S setup.cmake -VV
-      env:
-        FC: gfortran-9
-        CC: gcc-9
+    - run: cmake --preset=makemac -Darith=d
+    - run: cmake --build build --parallel
+    - run: ctest --parallel 2 --output-on-failure
+      working-directory: build
+
 
   meson:
+    if: false
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
@@ -34,18 +37,7 @@ jobs:
 
     - run: meson setup build -Darith=d
       env:
-        FC: gfortran-9
+        FC: gfortran-10
 
     - run: meson compile -C build
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: MacOS_Meson_Buildlog
-        path: build/meson-logs/meson-log.txt
-
     - run: meson test -C build -v
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: MacOS_Meson_Testlog
-        path: build/meson-logs/testlog.txt

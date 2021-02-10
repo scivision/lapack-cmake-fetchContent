@@ -16,9 +16,13 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: ctest -S setup.cmake -VV
+    - run: cmake --preset=makewin -Darith=d
+    - run: cmake --build build --parallel
+    - run: ctest --parallel 2 --output-on-failure
+      working-directory: build
 
   meson:
+    if: false
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v2
@@ -29,17 +33,5 @@ jobs:
     - run: pip install meson ninja
 
     - run: meson setup build -Darith=d
-
     - run: meson compile -C build
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: Windows_Meson_Buildlog
-        path: build/meson-logs/meson-log.txt
-
     - run: meson test -C build -v
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: Windows_Meson_Testlog
-        path: build/meson-logs/testlog.txt

@@ -14,15 +14,22 @@ on:
 jobs:
 
   cmake:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
 
-    - run: ctest -S setup.cmake -VV
-      env:
-        FC: gfortran-9
+    - run: |
+        sudo apt update -yq
+        sudo apt install -yq --no-install-recommends ninja-build
+
+    - run: cmake --preset=build -Darith="s;d"
+    - run: cmake --build build --parallel
+    - run: ctest --parallel 2 --output-on-failure
+      working-directory: build
+
 
   meson:
+    if: false
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -33,19 +40,5 @@ jobs:
     - run: pip install meson ninja
 
     - run: meson setup build -Darith=s
-      env:
-        FC: gfortran-9
-
     - run: meson compile -C build
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: Linux_Meson_Buildlog
-        path: build/meson-logs/meson-log.txt
-
     - run: meson test -C build -v
-    - uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: Linux_Meson_Testlog
-        path: build/meson-logs/testlog.txt
