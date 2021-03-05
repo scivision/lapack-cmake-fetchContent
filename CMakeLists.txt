@@ -1,6 +1,4 @@
-cmake_minimum_required(VERSION 3.13)
-
-include(CMAKE/policy.cmake)
+cmake_minimum_required(VERSION 3.13...3.20)
 
 project(LAPACK
 LANGUAGES C Fortran
@@ -53,6 +51,7 @@ set_target_properties(
   blas PROPERTIES
   LINKER_LANGUAGE Fortran
   VERSION ${LAPACK_VERSION}
+  EXPORT_NAME BLAS
   )
 add_subdirectory(BLAS/SRC)
 
@@ -63,7 +62,7 @@ if(BUILD_TESTING AND "d" IN_LIST arith)
 endif()
 
 install(TARGETS blas
-EXPORT LAPACKTargets
+EXPORT ${PROJECT_NAME}Targets
 ARCHIVE DESTINATION lib
 LIBRARY DESTINATION lib)
 
@@ -75,6 +74,7 @@ if(build_cblas)
     cblas PROPERTIES
     LINKER_LANGUAGE C
     VERSION ${LAPACK_VERSION}
+    EXPORT_NAME CBLAS
     )
   target_include_directories(cblas PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/CBLAS/include>
@@ -83,7 +83,7 @@ if(build_cblas)
   add_subdirectory(CBLAS/src)
 
   install(TARGETS cblas
-  EXPORT LAPACKTargets
+  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   INCLUDES DESTINATION include)
@@ -97,6 +97,7 @@ if(build_lapack)
     lapack PROPERTIES
     LINKER_LANGUAGE Fortran
     VERSION ${LAPACK_VERSION}
+    EXPORT_NAME LAPACK
     )
   add_subdirectory(SRC)
 
@@ -120,7 +121,7 @@ if(build_lapack)
   endif()
 
   install(TARGETS lapack
-  EXPORT LAPACKTargets
+  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib)
 endif()
@@ -133,6 +134,7 @@ if(build_lapacke)
     lapacke PROPERTIES
     LINKER_LANGUAGE C
     VERSION ${LAPACK_VERSION}
+    EXPORT_NAME LAPACKE
     )
   target_include_directories(lapacke PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/LAPACKE/include>
@@ -142,7 +144,7 @@ if(build_lapacke)
   add_subdirectory(LAPACKE/utils)
 
   install(TARGETS lapacke
-  EXPORT LAPACKTargets
+  EXPORT ${PROJECT_NAME}Targets
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   INCLUDES DESTINATION include)
