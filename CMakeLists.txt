@@ -1,9 +1,12 @@
 cmake_minimum_required(VERSION 3.14...3.20)
 
+file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION
+  REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1)
+
 project(LAPACK
-LANGUAGES C Fortran
-VERSION 3.9.1
-HOMEPAGE_URL "http://netlib.org/lapack")
+  LANGUAGES C Fortran
+  VERSION ${PROJECT_VERSION}
+  HOMEPAGE_URL "http://netlib.org/lapack")
 
 include(CTest)
 
