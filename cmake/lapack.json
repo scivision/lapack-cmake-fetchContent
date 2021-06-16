@@ -1,0 +1,7 @@
+{
+  "lapack": {
+    "sha256": "d0085d2caf997ff39299c05d4bacb6f3d27001d25a4cc613d48c1f352b73e7e0",
+    "url0": "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.9.1.tar.gz",
+    "url1": "https://github.com/Reference-LAPACK/lapack/archive/refs/tags/v3.9.1.tar.gz"
+  }
+}
