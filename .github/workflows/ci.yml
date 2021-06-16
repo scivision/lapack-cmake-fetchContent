@@ -16,7 +16,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: cmake --preset make -Darith=d
-    - run: cmake --build --preset default
+    - run: cmake --build --preset default --parallel
     - run: ctest --preset default
 
 
@@ -27,7 +27,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: cmake --preset makewin -Darith=d
-    - run: cmake --build --preset default
+    - run: cmake --build --preset default --parallel
     - run: ctest --preset default
 
 
@@ -42,5 +42,5 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: cmake --preset make -Darith=d
-    - run: cmake --build --preset default
+    - run: cmake --build --preset default --parallel
     - run: ctest --preset default
