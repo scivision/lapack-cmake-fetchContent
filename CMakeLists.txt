@@ -11,12 +11,6 @@ project(LAPACK
 include(CTest)
 
 include(cmake/options.cmake)
-
-if(NOT arith)
-  # build all by default
-  set(arith "s;d;c;z")
-endif()
-
 include(cmake/compilers.cmake)
 
 # --- download LAPACK
