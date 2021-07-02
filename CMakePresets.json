@@ -11,6 +11,16 @@
     "CMAKE_INSTALL_PREFIX": "${sourceDir}/build"}
 },
 {
+  "name": "build", "inherits": "default",
+  "displayName": "build all Lapack components",
+  "cacheVariables": {
+    "build_cblas": true,
+    "build_lapack": true,
+    "build_lapacke": true,
+    "build_xblas": true
+  }
+},
+{
   "name": "intel", "inherits": "default",
   "displayName": "Intel oneAPI LLVM",
   "binaryDir": "${sourceDir}/build-intel",
