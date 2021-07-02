@@ -47,6 +47,7 @@ if(build_cblas)
     )
   target_include_directories(cblas PUBLIC
     $<BUILD_INTERFACE:${lapack_SOURCE_DIR}/CBLAS/include>
+    $<BUILD_INTERFACE:${lapack_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
   configure_file(CBLAS/src/CMakeLists.txt ${lapack_SOURCE_DIR}/CBLAS/src/ COPYONLY)
