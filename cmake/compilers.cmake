@@ -16,7 +16,7 @@ endif()
 
 
 
-if(CMAKE_Fortran_COMPILER_ID STREQUAL Intel)
+if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   if(WIN32)
     add_compile_options(/QxHost)
     # /heap-arrays is necessary to avoid runtime errors in programs using this library
