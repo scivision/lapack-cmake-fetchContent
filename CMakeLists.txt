@@ -102,6 +102,7 @@ if(build_lapacke)
     )
   target_include_directories(lapacke PUBLIC
     $<BUILD_INTERFACE:${lapack_SOURCE_DIR}/LAPACKE/include>
+    $<BUILD_INTERFACE:${lapack_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
 

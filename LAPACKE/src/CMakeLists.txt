@@ -1,3 +1,9 @@
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../include/lapacke_mangling_with_flags.h.in
+               ${lapack_BINARY_DIR}/include/lapacke_mangling.h)
+
+install(FILES ${lapack_BINARY_DIR}/include/lapacke_mangling.h
+  TYPE INCLUDE)
+
 set(SOURCES_COMPLEX
 lapacke_cbbcsd.c
 lapacke_cbbcsd_work.c
