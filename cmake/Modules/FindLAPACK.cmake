@@ -141,7 +141,6 @@ if(LAPACK95 IN_LIST LAPACK_FIND_COMPONENTS)
 
   find_library(LAPACK95_LIBRARY
                  NAMES lapack95
-                 NAMES_PER_DIR
                  PATHS ${LAPACK95_ROOT})
 
   if(LAPACK95_LIBRARY AND LAPACK95_INCLUDE_DIR)
@@ -233,7 +232,6 @@ function(openblas_libs)
 pkg_check_modules(pc_lapack lapack-openblas)
 find_library(LAPACK_LIBRARY
   NAMES lapack
-  NAMES_PER_DIR
   HINTS ${pc_lapack_LIBRARY_DIRS} ${pc_lapack_LIBDIR}
   PATH_SUFFIXES openblas)
 
@@ -284,7 +282,6 @@ endif()
 foreach(s ${_mkl_libs})
   find_library(LAPACK_${s}_LIBRARY
            NAMES ${s}
-           NAMES_PER_DIR
            PATHS ${MKLROOT} ENV TBBROOT
            PATH_SUFFIXES
              lib lib/intel64 lib/intel64_win
