@@ -17,3 +17,9 @@ cmake --build build
 
 ctest --test-dir build
 ```
+
+select precision like
+
+```sh
+cmake "-Darith=s;d;c;z" -B build
+```

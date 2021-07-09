@@ -6,7 +6,7 @@ option(build_xblas "Build extended blas" false)
 
 # default build all
 if(NOT DEFINED arith)
-  set(arith "s;d;c;z")
+  set(arith "s;d")
 endif()
 
 set(CMAKE_TLS_VERIFY ON)
