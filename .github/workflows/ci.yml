@@ -1,5 +1,9 @@
 name: ci
 
+env:
+  CMAKE_BUILD_PARALLEL_LEVEL: 3
+  CTEST_PARALLLEL_LEVEL: 3
+
 on:
   push:
     paths:
@@ -15,8 +19,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: cmake --preset default -Darith=d -G "Unix Makefiles"
-    - run: cmake --build --preset default --parallel
+    - run: cmake --preset default -Darith=d
+    - run: cmake --build --preset default
     - run: ctest --preset default
 
 
@@ -27,7 +31,7 @@ jobs:
     - uses: actions/checkout@v2
 
     - run: cmake --preset default -Darith=d -G "MinGW Makefiles"
-    - run: cmake --build --preset default --parallel
+    - run: cmake --build --preset default
     - run: ctest --preset default
 
 
@@ -41,6 +45,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: cmake --preset default -Darith=d -G "Unix Makefiles"
-    - run: cmake --build --preset default --parallel
+    - run: cmake --preset default -Darith=d
+    - run: cmake --build --preset default
     - run: ctest --preset default
