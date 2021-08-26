@@ -14,8 +14,6 @@ endif()
 
 # --- compiler check
 
-
-
 if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   if(WIN32)
     add_compile_options(/QxHost)
