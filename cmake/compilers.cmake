@@ -15,15 +15,12 @@ endif()
 # --- compiler check
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
-  if(WIN32)
-    add_compile_options(/QxHost)
-    # /heap-arrays is necessary to avoid runtime errors in programs using this library
-    string(APPEND CMAKE_Fortran_FLAGS " /warn:declarations /heap-arrays")
-  else()
-    add_compile_options(-xHost)
-    string(APPEND CMAKE_Fortran_FLAGS " -warn declarations")
-  endif()
+  add_compile_options(
+  $<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>
+  "$<$<COMPILE_LANGUAGE:Fortran>:$<IF:$<BOOL:${WIN32}>,/warn:declarations;/heap-arrays,-warn declarations>>"
+  )
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-  add_compile_options(-mtune=native)
-  string(APPEND CMAKE_Fortran_FLAGS " -fimplicit-none")
+  add_compile_options(-mtune=native
+  $<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
+  )
 endif()
