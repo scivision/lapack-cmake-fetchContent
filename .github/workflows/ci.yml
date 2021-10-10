@@ -20,9 +20,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: cmake --preset default -Darith=d
-    - run: cmake --build --preset default
-    - run: ctest --preset default
+    - run: cmake -B build -Darith=d
+    - run: cmake --build build
+    - run: ctest --test-dir build --preset default
 
 
   windows:
@@ -31,9 +31,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: cmake --preset default -Darith=d -G "MinGW Makefiles"
-    - run: cmake --build --preset default
-    - run: ctest --preset default
+    - run: cmake -B build -Darith=d -G "MinGW Makefiles"
+    - run: cmake --build build
+    - run: ctest --test-dir build --preset default
 
 
   mac:
@@ -46,6 +46,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - run: cmake --preset default -Darith=d
-    - run: cmake --build --preset default
-    - run: ctest --preset default
+    - run: cmake -B build -Darith=d
+    - run: cmake --build build
+    - run: ctest --test-dir build --preset default
