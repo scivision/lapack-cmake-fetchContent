@@ -39,7 +39,7 @@ if(BUILD_TESTING AND "d" IN_LIST arith)
   add_test(NAME blasNRM2 COMMAND test_nrm2)
 endif()
 
-install(TARGETS blas EXPORT ${PROJECT_NAME}Targets)
+install(TARGETS blas EXPORT ${PROJECT_NAME}-targets)
 
 # --- CBLAS
 if(build_cblas)
@@ -58,7 +58,7 @@ if(build_cblas)
   configure_file(CBLAS/src/CMakeLists.txt ${lapack_SOURCE_DIR}/CBLAS/src/ COPYONLY)
   add_subdirectory(${lapack_SOURCE_DIR}/CBLAS/src ${lapack_BINARY_DIR}/CBLAS/src)
 
-  install(TARGETS cblas EXPORT ${PROJECT_NAME}Targets)
+  install(TARGETS cblas EXPORT ${PROJECT_NAME}-targets)
 endif()
 
 # --- LAPACK
@@ -93,7 +93,7 @@ if(build_lapack)
     endif()
   endif()
 
-  install(TARGETS lapack EXPORT ${PROJECT_NAME}Targets)
+  install(TARGETS lapack EXPORT ${PROJECT_NAME}-targets)
 endif()
 
 # --- LAPACKE
@@ -117,14 +117,15 @@ if(build_lapacke)
   configure_file(LAPACKE/utils/CMakeLists.txt ${lapack_SOURCE_DIR}/LAPACKE/utils/ COPYONLY)
   add_subdirectory(${lapack_SOURCE_DIR}/LAPACKE/utils ${lapack_BINARY_DIR}/LAPACKE/utils)
 
-  install(TARGETS lapacke EXPORT ${PROJECT_NAME}Targets)
+  install(TARGETS lapacke EXPORT ${PROJECT_NAME}-targets)
 endif()
 
 # --- install
 
 install(FILES
-  ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindLAPACK.cmake
-  DESTINATION lib/cmake/${PROJECT_NAME}/Modules)
+${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindLAPACK.cmake
+DESTINATION cmake
+)
 
 include(cmake/install.cmake)
 

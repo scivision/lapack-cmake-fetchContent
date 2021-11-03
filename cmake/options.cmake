@@ -16,6 +16,12 @@ set(FETCHCONTENT_UPDATES_DISCONNECTED_LAPACK true)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS on)
 
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  # will not take effect without FORCE
+  # CMAKE_BINARY_DIR for use from FetchContent
+  set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR} CACHE PATH "Install top-level directory" FORCE)
+endif()
+
 # --- auto-ignore build directory
 if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
   file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
