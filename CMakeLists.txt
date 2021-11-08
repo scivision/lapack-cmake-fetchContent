@@ -6,12 +6,14 @@ if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE
 endif()
 
 file(STRINGS ${CMAKE_CURRENT_SOURCE_DIR}/VERSION PROJECT_VERSION
-  REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1)
+REGEX "^([0-9]+\.[0-9]+\.[0-9]+)" LIMIT_INPUT 16 LENGTH_MAXIMUM 16 LIMIT_COUNT 1
+)
 
 project(LAPACK
-  LANGUAGES C Fortran
-  VERSION ${PROJECT_VERSION}
-  HOMEPAGE_URL "http://netlib.org/lapack")
+LANGUAGES C Fortran
+VERSION ${PROJECT_VERSION}
+HOMEPAGE_URL "http://netlib.org/lapack"
+)
 
 include(CTest)
 
@@ -24,10 +26,10 @@ include(cmake/get_lapack.cmake)
 # --- BLAS
 add_library(blas)
 set_target_properties(blas PROPERTIES
-  LINKER_LANGUAGE Fortran
-  VERSION ${LAPACK_VERSION}
-  EXPORT_NAME BLAS
-  )
+LINKER_LANGUAGE Fortran
+VERSION ${LAPACK_VERSION}
+EXPORT_NAME BLAS
+)
 
 
 configure_file(BLAS/src/CMakeLists.txt ${lapack_SOURCE_DIR}/BLAS/SRC/ COPYONLY)
@@ -46,14 +48,13 @@ if(build_cblas)
   add_library(cblas)
   target_link_libraries(cblas PRIVATE blas)
   set_target_properties(cblas PROPERTIES
-    LINKER_LANGUAGE C
-    VERSION ${LAPACK_VERSION}
-    EXPORT_NAME CBLAS
-    )
+  LINKER_LANGUAGE C
+  VERSION ${LAPACK_VERSION}
+  EXPORT_NAME CBLAS
+  )
   target_include_directories(cblas PUBLIC
-    $<BUILD_INTERFACE:${lapack_SOURCE_DIR}/CBLAS/include>
-    $<BUILD_INTERFACE:${lapack_BINARY_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+  "$<BUILD_INTERFACE:${lapack_SOURCE_DIR}/CBLAS/include;${lapack_BINARY_DIR}/include>"
+  $<INSTALL_INTERFACE:include>
   )
   configure_file(CBLAS/src/CMakeLists.txt ${lapack_SOURCE_DIR}/CBLAS/src/ COPYONLY)
   add_subdirectory(${lapack_SOURCE_DIR}/CBLAS/src ${lapack_BINARY_DIR}/CBLAS/src)
@@ -66,10 +67,10 @@ if(build_lapack)
   add_library(lapack)
   target_link_libraries(lapack PRIVATE blas)
   set_target_properties(lapack PROPERTIES
-    LINKER_LANGUAGE Fortran
-    VERSION ${LAPACK_VERSION}
-    EXPORT_NAME LAPACK
-    )
+  LINKER_LANGUAGE Fortran
+  VERSION ${LAPACK_VERSION}
+  EXPORT_NAME LAPACK
+  )
 
   configure_file(src/CMakeLists.txt ${lapack_SOURCE_DIR}/SRC/ COPYONLY)
   add_subdirectory(${lapack_SOURCE_DIR}/SRC ${lapack_BINARY_DIR}/SRC)
@@ -101,14 +102,13 @@ if(build_lapacke)
   add_library(lapacke)
   target_link_libraries(lapacke PRIVATE lapack)
   set_target_properties(lapacke PROPERTIES
-    LINKER_LANGUAGE C
-    VERSION ${LAPACK_VERSION}
-    EXPORT_NAME LAPACKE
-    )
+  LINKER_LANGUAGE C
+  VERSION ${LAPACK_VERSION}
+  EXPORT_NAME LAPACKE
+  )
   target_include_directories(lapacke PUBLIC
-    $<BUILD_INTERFACE:${lapack_SOURCE_DIR}/LAPACKE/include>
-    $<BUILD_INTERFACE:${lapack_BINARY_DIR}/include>
-    $<INSTALL_INTERFACE:include>
+  "$<BUILD_INTERFACE:${lapack_SOURCE_DIR}/LAPACKE/include;${lapack_BINARY_DIR}/include>"
+  $<INSTALL_INTERFACE:include>
   )
 
   configure_file(LAPACKE/src/CMakeLists.txt ${lapack_SOURCE_DIR}/LAPACKE/src/ COPYONLY)

@@ -1,5 +1,6 @@
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/../include/cblas_mangling_with_flags.h.in
-               ${lapack_BINARY_DIR}/include/cblas_mangling.h)
+${lapack_BINARY_DIR}/include/cblas_mangling.h
+)
 
 install(FILES ${lapack_BINARY_DIR}/include/cblas_mangling.h TYPE INCLUDE)
 
