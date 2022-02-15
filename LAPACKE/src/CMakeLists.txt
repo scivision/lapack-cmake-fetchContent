@@ -118,6 +118,8 @@ lapacke_cgetrs.c
 lapacke_cgetrs_work.c
 lapacke_cgetsls.c
 lapacke_cgetsls_work.c
+lapacke_cgetsqrhrt.c
+lapacke_cgetsqrhrt_work.c
 lapacke_cggbak.c
 lapacke_cggbak_work.c
 lapacke_cggbal.c
@@ -590,6 +592,8 @@ lapacke_cungrq.c
 lapacke_cungrq_work.c
 lapacke_cungtr.c
 lapacke_cungtr_work.c
+lapacke_cungtsqr_row.c
+lapacke_cungtsqr_row_work.c
 lapacke_cunmbr.c
 lapacke_cunmbr_work.c
 lapacke_cunmhr.c
@@ -732,6 +736,8 @@ lapacke_dgetrs.c
 lapacke_dgetrs_work.c
 lapacke_dgetsls.c
 lapacke_dgetsls_work.c
+lapacke_dgetsqrhrt.c
+lapacke_dgetsqrhrt_work.c
 lapacke_dggbak.c
 lapacke_dggbak_work.c
 lapacke_dggbal.c
@@ -854,6 +860,8 @@ lapacke_dorgrq.c
 lapacke_dorgrq_work.c
 lapacke_dorgtr.c
 lapacke_dorgtr_work.c
+lapacke_dorgtsqr_row.c
+lapacke_dorgtsqr_row_work.c
 lapacke_dormbr.c
 lapacke_dormbr_work.c
 lapacke_dormhr.c
@@ -1303,6 +1311,8 @@ lapacke_sgetrs.c
 lapacke_sgetrs_work.c
 lapacke_sgetsls.c
 lapacke_sgetsls_work.c
+lapacke_sgetsqrhrt.c
+lapacke_sgetsqrhrt_work.c
 lapacke_sggbak.c
 lapacke_sggbak_work.c
 lapacke_sggbal.c
@@ -1425,6 +1435,8 @@ lapacke_sorgrq.c
 lapacke_sorgrq_work.c
 lapacke_sorgtr.c
 lapacke_sorgtr_work.c
+lapacke_sorgtsqr_row.c
+lapacke_sorgtsqr_row_work.c
 lapacke_sormbr.c
 lapacke_sormbr_work.c
 lapacke_sormhr.c
@@ -1863,6 +1875,8 @@ lapacke_zgetrs.c
 lapacke_zgetrs_work.c
 lapacke_zgetsls.c
 lapacke_zgetsls_work.c
+lapacke_zgetsqrhrt.c
+lapacke_zgetsqrhrt_work.c
 lapacke_zggbak.c
 lapacke_zggbak_work.c
 lapacke_zggbal.c
@@ -2335,6 +2349,8 @@ lapacke_zungrq.c
 lapacke_zungrq_work.c
 lapacke_zungtr.c
 lapacke_zungtr_work.c
+lapacke_zungtsqr_row.c
+lapacke_zungtsqr_row_work.c
 lapacke_zunmbr.c
 lapacke_zunmbr_work.c
 lapacke_zunmhr.c
@@ -2385,73 +2401,18 @@ lapacke_zgeqpf_work.c
 )
 
 set(EXTENDED
-lapacke_cgbrfsx.c
-lapacke_cporfsx.c
-lapacke_dgerfsx.c
-lapacke_sgbrfsx.c
-lapacke_ssyrfsx.c
-lapacke_zherfsx.c
+lapacke_cgbrfsx.c       lapacke_cporfsx.c       lapacke_dgerfsx.c       lapacke_sgbrfsx.c       lapacke_ssyrfsx.c       lapacke_zherfsx.c
 lapacke_cgbrfsx_work.c  lapacke_cporfsx_work.c  lapacke_dgerfsx_work.c  lapacke_sgbrfsx_work.c  lapacke_ssyrfsx_work.c  lapacke_zherfsx_work.c
-lapacke_cgerfsx.c
-lapacke_csyrfsx.c
-lapacke_dporfsx.c
-lapacke_sgerfsx.c
-lapacke_zgbrfsx.c
-lapacke_zporfsx.c
-lapacke_cgerfsx_work.c
-lapacke_csyrfsx_work.c
-lapacke_dporfsx_work.c
-lapacke_sgerfsx_work.c
-lapacke_zgbrfsx_work.c
-lapacke_zporfsx_work.c
-lapacke_cherfsx.c
-lapacke_dgbrfsx.c
-lapacke_dsyrfsx.c
-lapacke_sporfsx.c
-lapacke_zgerfsx.c
-lapacke_zsyrfsx.c
-lapacke_cherfsx_work.c
-lapacke_dgbrfsx_work.c
-lapacke_dsyrfsx_work.c
-lapacke_sporfsx_work.c
-lapacke_zgerfsx_work.c
-lapacke_zsyrfsx_work.c
-lapacke_cgbsvxx.c
-lapacke_cposvxx.c
-lapacke_dgesvxx.c
-lapacke_sgbsvxx.c
-lapacke_ssysvxx.c
-lapacke_zhesvxx.c
-lapacke_cgbsvxx_work.c
-lapacke_cposvxx_work.c
-lapacke_dgesvxx_work.c
-lapacke_sgbsvxx_work.c
-lapacke_ssysvxx_work.c
-lapacke_zhesvxx_work.c
-lapacke_cgesvxx.c
-lapacke_csysvxx.c
-lapacke_dposvxx.c
-lapacke_sgesvxx.c
-lapacke_zgbsvxx.c
-lapacke_zposvxx.c
-lapacke_cgesvxx_work.c
-lapacke_csysvxx_work.c
-lapacke_dposvxx_work.c
-lapacke_sgesvxx_work.c
-lapacke_zgbsvxx_work.c
-lapacke_zposvxx_work.c
-lapacke_chesvxx.c
-lapacke_dgbsvxx.c
-lapacke_dsysvxx.c
-lapacke_sposvxx.c
-lapacke_zgesvxx.c
-lapacke_zsysvxx.c
-lapacke_chesvxx_work.c
-lapacke_dgbsvxx_work.c
-lapacke_dsysvxx_work.c
-lapacke_sposvxx_work.c
-lapacke_zgesvxx_work.c
-lapacke_zsysvxx_work.c
+lapacke_cgerfsx.c       lapacke_csyrfsx.c       lapacke_dporfsx.c       lapacke_sgerfsx.c       lapacke_zgbrfsx.c       lapacke_zporfsx.c
+lapacke_cgerfsx_work.c  lapacke_csyrfsx_work.c  lapacke_dporfsx_work.c  lapacke_sgerfsx_work.c  lapacke_zgbrfsx_work.c  lapacke_zporfsx_work.c
+lapacke_cherfsx.c       lapacke_dgbrfsx.c       lapacke_dsyrfsx.c       lapacke_sporfsx.c       lapacke_zgerfsx.c       lapacke_zsyrfsx.c
+lapacke_cherfsx_work.c  lapacke_dgbrfsx_work.c  lapacke_dsyrfsx_work.c  lapacke_sporfsx_work.c  lapacke_zgerfsx_work.c  lapacke_zsyrfsx_work.c
+lapacke_cgbsvxx.c       lapacke_cposvxx.c       lapacke_dgesvxx.c       lapacke_sgbsvxx.c       lapacke_ssysvxx.c       lapacke_zhesvxx.c
+lapacke_cgbsvxx_work.c  lapacke_cposvxx_work.c  lapacke_dgesvxx_work.c  lapacke_sgbsvxx_work.c  lapacke_ssysvxx_work.c  lapacke_zhesvxx_work.c
+lapacke_cgesvxx.c       lapacke_csysvxx.c       lapacke_dposvxx.c       lapacke_sgesvxx.c       lapacke_zgbsvxx.c       lapacke_zposvxx.c
+lapacke_cgesvxx_work.c  lapacke_csysvxx_work.c  lapacke_dposvxx_work.c  lapacke_sgesvxx_work.c  lapacke_zgbsvxx_work.c  lapacke_zposvxx_work.c
+lapacke_chesvxx.c       lapacke_dgbsvxx.c       lapacke_dsysvxx.c       lapacke_sposvxx.c       lapacke_zgesvxx.c       lapacke_zsysvxx.c
+lapacke_chesvxx_work.c  lapacke_dgbsvxx_work.c  lapacke_dsysvxx_work.c  lapacke_sposvxx_work.c  lapacke_zgesvxx_work.c  lapacke_zsysvxx_work.c
 )
 
 # FILE PARTS OF TMGLIB
