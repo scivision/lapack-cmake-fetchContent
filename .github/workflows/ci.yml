@@ -1,9 +1,9 @@
 name: ci
 
 env:
-  CMAKE_BUILD_PARALLEL_LEVEL: 4
   CTEST_PARALLLEL_LEVEL: 3
   CMAKE_BUILD_TYPE: Release
+  HOMEBREW_NO_INSTALL_CLEANUP: 1
 
 on:
   push:
@@ -15,37 +15,63 @@ on:
 
 jobs:
 
-  linux:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
+  static-fortran:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            fc: gfortran
+            cmake_gen: "Unix Makefiles"
+          - os: macos-latest
+            fc: gfortran-11
+            cmake_gen: "Unix Makefiles"
+          - os: windows-latest
+            fc: gfortran
+            cmake_gen: "MinGW Makefiles"
 
-    - run: cmake -B build -Darith=d
-    - run: cmake --build build --parallel
-    - run: ctest --test-dir build --preset default
-
-
-  windows:
-    needs: linux
-    runs-on: windows-latest
-    steps:
-    - uses: actions/checkout@v2
-
-    - run: cmake -B build -Darith=d -G "MinGW Makefiles"
-    - run: cmake --build build --parallel
-    - run: ctest --test-dir build --preset default
-
-
-  mac:
-    needs: linux
-    runs-on: macos-latest
-    env:
-      HOMEBREW_NO_INSTALL_CLEANUP: 1
-      FC: gfortran-11
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
 
     steps:
+
     - uses: actions/checkout@v2
 
-    - run: cmake -B build -Darith=d
+    - run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=off
+      env:
+        FC: ${{ matrix.fc }}
+        CMAKE_GENERATOR: ${{ matrix.cmake_gen }}
+
     - run: cmake --build build --parallel
-    - run: ctest --test-dir build --preset default
+
+    - run: ctest --test-dir build --preset default -V
+
+
+  shared-fortran:
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            fc: gfortran
+            cmake_gen: "Unix Makefiles"
+          - os: macos-latest
+            fc: gfortran-11
+            cmake_gen: "Unix Makefiles"
+          - os: windows-latest
+            fc: gfortran
+            cmake_gen: "MinGW Makefiles"
+
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 7
+
+    steps:
+
+    - uses: actions/checkout@v2
+
+    - run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=on
+      env:
+        FC: ${{ matrix.fc }}
+        CMAKE_GENERATOR: ${{ matrix.cmake_gen }}
+
+    - run: cmake --build build --parallel
+
+    - run: ctest --test-dir build --preset default -V
