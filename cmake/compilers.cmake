@@ -24,3 +24,9 @@ elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
   $<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
   )
 endif()
+
+
+# fixes errors about needing -fPIC -- needed by targets linking to lapack to have lapack build with this
+if(CMAKE_SYSTEM_NAME STREQUAL Linux AND BUILD_SHARED_LIBS)
+  set(CMAKE_POSITION_INDEPENDENT_CODE true)
+endif()
