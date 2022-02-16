@@ -16,6 +16,20 @@ if(z IN_LIST arith AND NOT d IN_LIST arith)
   list(APPEND arith d)
 endif()
 
+if(build_lapacke)
+  set(build_lapack true)
+
+  if(s IN_LIST arith AND NOT d IN_LIST arith)
+    list(APPEND arith d)
+  endif()
+  if(d IN_LIST arith AND NOT s IN_LIST arith)
+    list(APPEND arith s)
+  endif()
+  if(c IN_LIST arith OR z IN_LIST arith)
+    set(arith "s;d;c;z")
+  endif()
+endif()
+
 set(CMAKE_TLS_VERIFY ON)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED_LAPACK true)
