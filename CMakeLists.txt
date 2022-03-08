@@ -21,7 +21,7 @@ include(cmake/options.cmake)
 include(cmake/compilers.cmake)
 
 # --- download LAPACK
-include(cmake/get_lapack.cmake)
+include(cmake/lapack_src.cmake)
 
 # --- BLAS
 add_library(blas)

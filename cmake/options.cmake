@@ -30,6 +30,8 @@ if(build_lapacke)
   endif()
 endif()
 
+message(STATUS "Lapack ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
+
 set(CMAKE_TLS_VERIFY ON)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED_LAPACK true)
