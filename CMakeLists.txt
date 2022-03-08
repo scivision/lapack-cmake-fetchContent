@@ -77,8 +77,15 @@ if(build_lapack)
 
   ### test lapack
   if(BUILD_TESTING)
-    include(CheckFortranSourceCompiles)
-    check_fortran_source_compiles("real :: x; x=norm2([0.]); end" f08_norm2 SRC_EXT f90)
+    include(CheckSourceCompiles)
+    check_source_compiles(Fortran
+    "program a
+    implicit none (type, external)
+    real :: x
+    x = norm2([0.])
+    end program"
+    f08_norm2
+    )
   endif()
 
   if(f08_norm2)
