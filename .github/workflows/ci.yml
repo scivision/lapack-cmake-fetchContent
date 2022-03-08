@@ -15,63 +15,30 @@ on:
 
 jobs:
 
-  static-fortran:
+  fortran:
     strategy:
       matrix:
-        include:
-          - os: ubuntu-latest
-            fc: gfortran
-            cmake_gen: "Unix Makefiles"
-          - os: macos-latest
-            fc: gfortran-11
-            cmake_gen: "Unix Makefiles"
-          - os: windows-latest
-            fc: gfortran
-            cmake_gen: "MinGW Makefiles"
+        shared: [true, false]
+        img: [ {os: ubuntu-latest, fc: gfortran, cmake_gen: Unix Makefiles},
+               {os: macos-latest, fc: gfortran-11, cmake_gen: Unix Makefiles},
+               {os: windows-latest, fc: gfortran, cmake_gen: MinGW Makefiles}
+        ]
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.img.os }}
     timeout-minutes: 7
+    env:
+      FC: ${{ matrix.img.fc }}
+      CMAKE_GENERATOR: ${{ matrix.img.cmake_gen }}
 
     steps:
 
     - uses: actions/checkout@v2
 
-    - run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=off
-      env:
-        FC: ${{ matrix.fc }}
-        CMAKE_GENERATOR: ${{ matrix.cmake_gen }}
+    - name: config shared=${{ matrix.shared }}
+      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
 
-    - run: cmake --build build --parallel
+    - name: build
+      run: cmake --build build --parallel
 
-    - run: ctest --test-dir build --preset default -V
-
-
-  shared-fortran:
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            fc: gfortran
-            cmake_gen: "Unix Makefiles"
-          - os: macos-latest
-            fc: gfortran-11
-            cmake_gen: "Unix Makefiles"
-          - os: windows-latest
-            fc: gfortran
-            cmake_gen: "MinGW Makefiles"
-
-    runs-on: ${{ matrix.os }}
-    timeout-minutes: 7
-
-    steps:
-
-    - uses: actions/checkout@v2
-
-    - run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=on
-      env:
-        FC: ${{ matrix.fc }}
-        CMAKE_GENERATOR: ${{ matrix.cmake_gen }}
-
-    - run: cmake --build build --parallel
-
-    - run: ctest --test-dir build --preset default -V
+    - name: test
+      run: ctest --test-dir build --preset default -V
