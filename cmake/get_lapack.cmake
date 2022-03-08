@@ -22,6 +22,4 @@ URL ${lapack_urls}
 URL_HASH SHA256=${lapack_sha256}
 )
 
-if(NOT lapack_POPULATED)
-  FetchContent_Populate(LAPACK)
-endif()
+FetchContent_Populate(LAPACK)
