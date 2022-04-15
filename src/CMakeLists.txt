@@ -56,9 +56,8 @@ set(SCLAUX
    slaset.f slasq1.f slasq2.f slasq3.f slasq4.f slasq5.f slasq6.f
    slasr.f  slasrt.f slassq.f90 slasv2.f spttrf.f sstebz.f sstedc.f
    sstein.f ssteqr.f ssterf.f sstevx.f
-   slartgp.f slartgs.f
-   )
-   # ../INSTALL/sroundup_lwork.f
+   slartgp.f slartgs.f ../INSTALL/sroundup_lwork.f
+)
 
 set(DZLAUX
    la_constants.f90
@@ -79,9 +78,8 @@ set(DZLAUX
    dlasr.f  dlasrt.f dlassq.f90 dlasv2.f dlaisnan.f
    dpttrf.f
    dstebz.f dstedc.f dstein.f dsteqr.f dsterf.f dstevx.f
-   dlartgp.f dlartgs.f
+   dlartgp.f dlartgs.f ../INSTALL/droundup_lwork.f
    ../INSTALL/dlamch.f)
-   # ../INSTALL/droundup_lwork.f
 
 set(SLASRC
    sgbbrd.f sgbcon.f sgbequ.f sgbrfs.f sgbsv.f
@@ -160,7 +158,7 @@ set(SLASRC
    ssytrd_2stage.f ssytrd_sy2sb.f ssytrd_sb2st.F ssb2st_kernels.f
    ssyevd_2stage.f ssyev_2stage.f ssyevx_2stage.f ssyevr_2stage.f
    ssbev_2stage.f ssbevx_2stage.f ssbevd_2stage.f ssygv_2stage.f
-   sgesvdq.f scombssq.f)
+   sgesvdq.f)
 
 set(DSLASRC
     sgetrf.f sgetrf2.f sgetrs.f sisnan.f slaisnan.f slaswp.f spotrf.f spotrf2.f
@@ -362,7 +360,7 @@ set(DLASRC
    dsytrd_2stage.f dsytrd_sy2sb.f dsytrd_sb2st.F dsb2st_kernels.f
    dsyevd_2stage.f dsyev_2stage.f dsyevx_2stage.f dsyevr_2stage.f
    dsbev_2stage.f dsbevx_2stage.f dsbevd_2stage.f dsygv_2stage.f
-   dgesvdq.f dcombssq.f)
+   dgesvdq.f)
 
 set(DXLASRC dgesvxx.f dgerfsx.f dla_gerfsx_extended.f dla_geamv.f
    dla_gercond.f dla_gerpvgrw.f dsysvxx.f dsyrfsx.f
