@@ -12,6 +12,7 @@ GIT_REPOSITORY ${lapack_url}
 GIT_TAG ${lapack_tag}
 GIT_SHALLOW true
 INACTIVITY_TIMEOUT 60
+TLS_VERIFY true
 )
 
 FetchContent_Populate(LAPACK)

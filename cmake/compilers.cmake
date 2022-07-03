@@ -16,13 +16,20 @@ endif()
 
 if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   add_compile_options(
-  $<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>
   "$<$<COMPILE_LANGUAGE:Fortran>:$<IF:$<BOOL:${WIN32}>,/warn:declarations;/heap-arrays,-implicitnone>>"
   )
+
+  if(NOT CMAKE_CROSSCOMPILING)
+    add_compile_options($<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>)
+  endif()
 elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
-  add_compile_options(-mtune=native
+  add_compile_options(
   $<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
   )
+
+  if(NOT CMAKE_CROSSCOMPILING)
+    add_compile_options(-mtune=native)
+  endif()
 endif()
 
 
