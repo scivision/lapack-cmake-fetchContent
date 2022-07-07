@@ -40,10 +40,22 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: config shared=${{ matrix.shared }}
-      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }}
+      run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_INSTALL_PREFIX:PATH=${{ runner.temp }}
 
     - name: build
       run: cmake --build build --parallel
 
     - name: test
       run: ctest --test-dir build --preset default -V
+
+    - name: install
+      run: cmake --install build
+
+    - name: example config
+      run: cmake -S example -B example/build -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_PREFIX_PATH:PATH=${{ runner.temp }}
+
+    - name: example build
+      run: cmake --build example/build
+
+    - name: example test
+      run: ctest --test-dir example/build

@@ -1,6 +1,8 @@
-module svd64
-use, intrinsic :: iso_fortran_env, only: stderr=>error_unit, wp=>real64
-implicit none
+module svd32
+
+use, intrinsic :: iso_fortran_env, only: stderr=>error_unit, wp=>real32
+
+implicit none (type, external)
 
 integer, parameter :: LRATIO=8
 integer, parameter :: M=3, N=3
@@ -9,6 +11,9 @@ integer, parameter :: Lwork = LRATIO*M !at least 5M for sgesvd
 
 real(wp) :: U(M,M), VT(N,N)
 real(wp) :: S(N), SWORK(LRATIO*M) !this Swork is real
+
+private
+public :: svd, wp, errchk, M, N
 
 contains
 
@@ -26,12 +31,15 @@ end subroutine errchk
 
 
 integer function svd(A, B) result(info)
+
+external :: sgesvd
+
 real(wp), intent(in) :: A(M, N), B(M, 1)
 real(wp) :: truthS(N), errmag(N)
 
 truthS = [3.97303, 1.46913, 1.02795]
 
-call dgesvd('A','N',M,N, A, M,S,U,M,VT, N, SWORK, LWORK, info)
+call sgesvd('A','N',M,N, A, M,S,U,M,VT, N, SWORK, LWORK, info)
 
 errmag = norm2(s-truthS)
 if (any(errmag > 1e-3)) then
@@ -43,11 +51,14 @@ endif
 
 end function svd
 
-end module svd64
+end module svd32
 
 
-use svd64
-implicit none
+program test
+
+use svd32
+
+implicit none (type, external)
 
 integer :: info
 real(wp) :: A(M, N), B(M,1)

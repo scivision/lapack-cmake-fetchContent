@@ -32,7 +32,7 @@ endif()
 
 set(CMAKE_TLS_VERIFY true)
 
-set(FETCHCONTENT_UPDATES_DISCONNECTED_LAPACK true)
+set(FETCHCONTENT_UPDATES_DISCONNECTED true)
 
 # Rpath options necessary for shared library install to work correctly in user projects
 set(CMAKE_INSTALL_NAME_DIR ${CMAKE_INSTALL_PREFIX}/lib)
