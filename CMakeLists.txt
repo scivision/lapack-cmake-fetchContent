@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.19...3.23)
+cmake_minimum_required(VERSION 3.19...3.24)
 
 get_property(is_multi_config GLOBAL PROPERTY GENERATOR_IS_MULTI_CONFIG)
 if(NOT is_multi_config AND NOT (CMAKE_BUILD_TYPE OR DEFINED ENV{CMAKE_BUILD_TYPE}))
@@ -15,7 +15,12 @@ VERSION ${PROJECT_VERSION}
 HOMEPAGE_URL "http://netlib.org/lapack"
 )
 
-include(CTest)
+enable_testing()
+if(DEFINED BUILD_TESTING)
+  set(${PROJECT_NAME}_BUILD_TESTING ${BUILD_TESTING})
+else()
+  set(${PROJECT_NAME}_BUILD_TESTING true)
+endif()
 
 include(cmake/options.cmake)
 include(cmake/compilers.cmake)
@@ -34,12 +39,6 @@ EXPORT_NAME BLAS
 
 configure_file(BLAS/src/CMakeLists.txt ${lapack_SOURCE_DIR}/BLAS/SRC/ COPYONLY)
 add_subdirectory(${lapack_SOURCE_DIR}/BLAS/SRC ${lapack_BINARY_DIR}/BLAS/SRC)
-
-if(BUILD_TESTING AND "d" IN_LIST arith)
-  add_executable(test_nrm2 tests/test_nrm2.f90)
-  target_link_libraries(test_nrm2 blas)
-  add_test(NAME blasNRM2 COMMAND test_nrm2)
-endif()
 
 install(TARGETS blas EXPORT ${PROJECT_NAME}-targets)
 
@@ -63,46 +62,19 @@ if(build_cblas)
 endif()
 
 # --- LAPACK
-if(build_lapack)
-  add_library(lapack)
-  target_link_libraries(lapack PRIVATE blas)
-  set_target_properties(lapack PROPERTIES
-  LINKER_LANGUAGE Fortran
-  VERSION ${LAPACK_VERSION}
-  EXPORT_NAME LAPACK
-  )
+add_library(lapack)
+target_link_libraries(lapack PRIVATE blas)
+set_target_properties(lapack PROPERTIES
+LINKER_LANGUAGE Fortran
+VERSION ${LAPACK_VERSION}
+EXPORT_NAME LAPACK
+)
 
-  configure_file(src/CMakeLists.txt ${lapack_SOURCE_DIR}/SRC/ COPYONLY)
-  add_subdirectory(${lapack_SOURCE_DIR}/SRC ${lapack_BINARY_DIR}/SRC)
+configure_file(src/CMakeLists.txt ${lapack_SOURCE_DIR}/SRC/ COPYONLY)
+add_subdirectory(${lapack_SOURCE_DIR}/SRC ${lapack_BINARY_DIR}/SRC)
 
-  ### test lapack
-  if(BUILD_TESTING)
-    include(CheckSourceCompiles)
-    check_source_compiles(Fortran
-    "program a
-    implicit none (type, external)
-    real :: x
-    x = norm2([0.])
-    end program"
-    f08_norm2
-    )
-  endif()
+install(TARGETS lapack EXPORT ${PROJECT_NAME}-targets)
 
-  if(f08_norm2)
-    if("d" IN_LIST arith)
-      add_executable(test_dgesvd tests/test_dgesvd.f90)
-      target_link_libraries(test_dgesvd lapack)
-      add_test(NAME dGESV COMMAND test_dgesvd)
-    endif()
-    if("s" IN_LIST arith)
-      add_executable(test_sgesvd tests/test_sgesvd.f90)
-      target_link_libraries(test_sgesvd lapack)
-      add_test(NAME sGESV COMMAND test_sgesvd)
-    endif()
-  endif()
-
-  install(TARGETS lapack EXPORT ${PROJECT_NAME}-targets)
-endif()
 
 # --- LAPACKE
 if(build_lapacke)
@@ -127,6 +99,11 @@ if(build_lapacke)
   install(TARGETS lapacke EXPORT ${PROJECT_NAME}-targets)
 endif()
 
+# --- test
+if(${PROJECT_NAME}_BUILD_TESTING)
+  add_subdirectory(test)
+endif()
+
 # --- install
 
 install(FILES
@@ -138,7 +115,6 @@ include(cmake/install.cmake)
 
 include(FeatureSummary)
 add_feature_info(C-BLAS build_cblas "Build CBLAS")
-add_feature_info(FortranLapack build_lapack "Build Fortran LAPACK")
 add_feature_info(C-LapackE build_lapacke "Build C-langauge LAPACKE")
 add_feature_info(ExtendedBLAS build_xblas "Build extended BLAS")
 feature_summary(WHAT ENABLED_FEATURES DISABLED_FEATURES)

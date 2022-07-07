@@ -22,7 +22,7 @@ if(CMAKE_Fortran_COMPILER_ID MATCHES Intel)
   if(NOT CMAKE_CROSSCOMPILING)
     add_compile_options($<IF:$<BOOL:${WIN32}>,/QxHost,-xHost>)
   endif()
-elseif(CMAKE_Fortran_COMPILER_ID STREQUAL GNU)
+elseif(CMAKE_Fortran_COMPILER_ID STREQUAL "GNU")
   add_compile_options(
   $<$<COMPILE_LANGUAGE:Fortran>:-fimplicit-none>
   )
@@ -34,6 +34,6 @@ endif()
 
 
 # fixes errors about needing -fPIC -- needed by targets linking to lapack to have lapack build with this
-if(CMAKE_SYSTEM_NAME STREQUAL Linux AND BUILD_SHARED_LIBS)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux" AND BUILD_SHARED_LIBS)
   set(CMAKE_POSITION_INDEPENDENT_CODE true)
 endif()
