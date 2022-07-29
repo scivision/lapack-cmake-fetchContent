@@ -3,16 +3,6 @@
 
 "configurePresets": [
 {
-  "name": "build",
-  "displayName": "build all Lapack components",
-  "cacheVariables": {
-    "build_cblas": true,
-    "build_lapack": true,
-    "build_lapacke": true,
-    "build_xblas": true
-  }
-},
-{
   "name": "phony"
 }
 ],
@@ -26,7 +16,9 @@
   },
   "execution": {
     "noTestsAction": "error",
-    "stopOnFailure": false
+    "scheduleRandom": true,
+    "stopOnFailure": false,
+    "timeout": 10
   }
 }
 ]

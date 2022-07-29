@@ -1,4 +1,4 @@
-message(STATUS "Lapack ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
 
 
 option(build_cblas "Build CBLAS" false)
