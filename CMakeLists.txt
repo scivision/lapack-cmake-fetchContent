@@ -30,11 +30,9 @@ include(cmake/lapack_src.cmake)
 
 # --- BLAS
 add_library(blas)
-set_target_properties(blas PROPERTIES
-LINKER_LANGUAGE Fortran
-VERSION ${LAPACK_VERSION}
-EXPORT_NAME BLAS
-)
+set_property(TARGET blas PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET blas PROPERTY VERSION ${LAPACK_VERSION})
+set_property(TARGET blas PROPERTY EXPORT_NAME BLAS)
 
 
 configure_file(BLAS/src/CMakeLists.txt ${lapack_SOURCE_DIR}/BLAS/SRC/ COPYONLY)
@@ -46,11 +44,9 @@ install(TARGETS blas EXPORT ${PROJECT_NAME}-targets)
 if(build_cblas)
   add_library(cblas)
   target_link_libraries(cblas PRIVATE blas)
-  set_target_properties(cblas PROPERTIES
-  LINKER_LANGUAGE C
-  VERSION ${LAPACK_VERSION}
-  EXPORT_NAME CBLAS
-  )
+  set_property(TARGET cblas PROPERTY LINKER_LANGUAGE C)
+  set_property(TARGET cblas PROPERTY VERSION ${LAPACK_VERSION})
+  set_property(TARGET cblas PROPERTY EXPORT_NAME CBLAS)
   target_include_directories(cblas PUBLIC
   "$<BUILD_INTERFACE:${lapack_SOURCE_DIR}/CBLAS/include;${lapack_BINARY_DIR}/include>"
   $<INSTALL_INTERFACE:include>
@@ -64,11 +60,9 @@ endif()
 # --- LAPACK
 add_library(lapack)
 target_link_libraries(lapack PRIVATE blas)
-set_target_properties(lapack PROPERTIES
-LINKER_LANGUAGE Fortran
-VERSION ${LAPACK_VERSION}
-EXPORT_NAME LAPACK
-)
+set_property(TARGET lapack PROPERTY LINKER_LANGUAGE Fortran)
+set_property(TARGET lapack PROPERTY VERSION ${LAPACK_VERSION})
+set_property(TARGET lapack PROPERTY EXPORT_NAME LAPACK)
 
 configure_file(src/CMakeLists.txt ${lapack_SOURCE_DIR}/SRC/ COPYONLY)
 add_subdirectory(${lapack_SOURCE_DIR}/SRC ${lapack_BINARY_DIR}/SRC)
@@ -80,11 +74,9 @@ install(TARGETS lapack EXPORT ${PROJECT_NAME}-targets)
 if(build_lapacke)
   add_library(lapacke)
   target_link_libraries(lapacke PRIVATE lapack)
-  set_target_properties(lapacke PROPERTIES
-  LINKER_LANGUAGE C
-  VERSION ${LAPACK_VERSION}
-  EXPORT_NAME LAPACKE
-  )
+  set_property(TARGET lapacke PROPERTY LINKER_LANGUAGE C)
+  set_property(TARGET lapacke PROPERTY VERSION ${LAPACK_VERSION})
+  set_property(TARGET lapacke PROPERTY EXPORT_NAME LAPACKE)
   target_include_directories(lapacke PUBLIC
   "$<BUILD_INTERFACE:${lapack_SOURCE_DIR}/LAPACKE/include;${lapack_BINARY_DIR}/include>"
   $<INSTALL_INTERFACE:include>
