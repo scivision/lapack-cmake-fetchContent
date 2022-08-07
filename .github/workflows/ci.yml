@@ -18,15 +18,14 @@ jobs:
     strategy:
       matrix:
         shared: [true, false]
-        img: [ {os: ubuntu-latest, fc: gfortran, cmake_gen: Unix Makefiles},
-               {os: macos-latest, fc: gfortran-11, cmake_gen: Unix Makefiles},
-               {os: windows-latest, fc: gfortran, cmake_gen: MinGW Makefiles}
+        img: [ {os: ubuntu-latest, cmake_gen: Unix Makefiles},
+               {os: macos-latest, cmake_gen: Unix Makefiles},
+               {os: windows-latest, cmake_gen: MinGW Makefiles}
         ]
 
     runs-on: ${{ matrix.img.os }}
     timeout-minutes: 7
     env:
-      FC: ${{ matrix.img.fc }}
       CMAKE_GENERATOR: ${{ matrix.img.cmake_gen }}
 
     steps:
@@ -36,7 +35,11 @@ jobs:
       with:
         cmake-version: '3.19'
 
-    - uses: actions/checkout@v2
+    - name: install Gfortran
+      if: runner.os == 'macOS'
+      run: brew reinstall gcc
+
+    - uses: actions/checkout@v3
 
     - name: config shared=${{ matrix.shared }}
       run: cmake -B build -Darith=d -DBUILD_SHARED_LIBS:BOOL=${{ matrix.shared }} -DCMAKE_INSTALL_PREFIX:PATH=${{ runner.temp }}

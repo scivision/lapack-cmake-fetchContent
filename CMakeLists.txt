@@ -99,7 +99,7 @@ endif()
 # --- install
 
 install(FILES
-${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/FindLAPACK.cmake
+${CMAKE_CURRENT_SOURCE_DIR}/cmake/FindLAPACK.cmake
 DESTINATION cmake
 )
 
