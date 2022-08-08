@@ -30,6 +30,8 @@ if(build_lapacke)
   endif()
 endif()
 
+include(GNUInstallDirs)
+
 set(CMAKE_TLS_VERIFY true)
 
 set(FETCHCONTENT_UPDATES_DISCONNECTED true)

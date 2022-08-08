@@ -1,5 +1,5 @@
 if("d" IN_LIST arith)
   add_executable(test_nrm2 test_nrm2.f90)
-  target_link_libraries(test_nrm2 blas)
+  target_link_libraries(test_nrm2 PRIVATE blas)
   add_test(NAME blasNRM2 COMMAND test_nrm2)
 endif()

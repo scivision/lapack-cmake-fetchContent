@@ -1,16 +1,16 @@
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.13...3.25)
 
 project(LapackExamples LANGUAGES Fortran)
 
 enable_testing()
 
-include(CheckSourceCompiles)
+include(CheckFortranSourceCompiles)
 
 find_package(LAPACK CONFIG REQUIRED)
 
 set(CMAKE_REQUIRED_LIBRARIES LAPACK::LAPACK)
 
-check_source_compiles(Fortran "
+check_fortran_source_compiles("
 program a
 use, intrinsic :: iso_fortran_env, only : real64
 implicit none
@@ -21,9 +21,10 @@ print *, dnrm2(1, [0._real64], 1)
 end program
 "
 lapack_d
+SRC_EXT f90
 )
 
-check_source_compiles(Fortran "
+check_fortran_source_compiles("
 program a
 use, intrinsic :: iso_fortran_env, only : real32
 implicit none
@@ -34,6 +35,7 @@ print *, snrm2(1, [0._real32], 1)
 end program
 "
 lapack_s
+SRC_EXT f90
 )
 
 if(lapack_d)
