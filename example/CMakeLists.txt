@@ -6,6 +6,11 @@ enable_testing()
 
 include(CheckFortranSourceCompiles)
 
+# --- auto-ignore build directory
+if(NOT EXISTS ${PROJECT_BINARY_DIR}/.gitignore)
+  file(WRITE ${PROJECT_BINARY_DIR}/.gitignore "*")
+endif()
+
 find_package(LAPACK CONFIG REQUIRED)
 
 set(CMAKE_REQUIRED_LIBRARIES LAPACK::LAPACK)
