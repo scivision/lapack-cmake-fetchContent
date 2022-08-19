@@ -1,4 +1,12 @@
-message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}")
+message(STATUS "${PROJECT_NAME} ${PROJECT_VERSION}  CMake ${CMAKE_VERSION}  Toolchain ${CMAKE_TOOLCHAIN_FILE}")
+
+if(local)
+  get_filename_component(local ${local} ABSOLUTE)
+
+  if(NOT IS_DIRECTORY ${local})
+    message(FATAL_ERROR "Local directory ${local} does not exist")
+  endif()
+endif()
 
 
 option(build_cblas "Build CBLAS" false)
