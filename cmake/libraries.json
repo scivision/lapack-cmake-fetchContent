@@ -1,5 +1,5 @@
 {
-  "lapack": {
+  "lapack_src": {
     "tag": "v3.10.1",
     "url": "https://github.com/Reference-LAPACK/lapack.git"
   }
